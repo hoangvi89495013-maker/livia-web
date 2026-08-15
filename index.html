@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>宋佳珊 Livia — Visual Creator · Photography / Video / Design</title>
+<meta name="description" content="一名视觉创作者的数字摄影书 — LEAVING 1129 空间观察、VISUAL TRANSLATION 视觉转译。">
+<meta property="og:title" content="宋佳珊 Livia — Visual Creator">
+<meta property="og:description" content="LEAVING 1129 · A Visual Study of Space and Everyday Life · Hangzhou 2026">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/leaving-01.jpg">
+
+<script>
+  /* 图片加载失败时隐藏，露出纸感相框占位 */
+  function imgErr(img) { img.onerror = null; img.style.visibility = 'hidden'; }
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ 视觉系统 ============ */
+  :root {
+    --background: #F3F1EB;
+    --text-primary: #1C1C1C;
+    --text-secondary: #8A867D;
+    --border: rgba(28, 28, 28, 0.12);
+    --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+    --mono: "IBM Plex Mono", "Courier New", monospace;
+    --body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --pad: clamp(1.25rem, 4vw, 4rem);
+    --max: 1480px;
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1.7;
+    background: var(--background);
+    overflow-x: hidden;
+  }
+
+  /* ===== 背景分层：纸（最底）→ 背景文字 → 颗粒 ===== */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background: var(--background);
+  }
+  .bg-text {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .bg-line {
+    font-family: var(--body);
+    font-weight: 800;
+    font-size: clamp(180px, 24vw, 300px);
+    line-height: 0.78;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    white-space: nowrap;
+    text-transform: uppercase;
+    animation: bgBreathe 10s ease-in-out infinite;
+  }
+  .bg-line--visual { margin-left: -6%; }
+  .bg-line--archive { margin-left: 26%; }
+  @keyframes bgBreathe {
+    0%, 100% { opacity: 0.12; }
+    50% { opacity: 0.22; }
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  img, video { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+
+  ::selection { background: rgba(28, 28, 28, 0.14); }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* ============ 导航 ============ */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem var(--pad);
+    background: rgba(243, 241, 235, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+  }
+  .nav-brand-en {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
+    margin-left: 0.6rem;
+  }
+  .nav-links { display: flex; gap: clamp(1.2rem, 3vw, 2.4rem); }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    position: relative;
+  }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0; height: 1px;
+    background: var(--text-primary);
+    transition: width 0.4s var(--ease);
+  }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ============ Hero（排版式封面，无照片背景） ============ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-content {
+    margin-top: auto;
+    padding: 0 var(--pad) clamp(2rem, 7vh, 5rem);
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 2rem;
+    align-items: end;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(2.4rem, 8vw, 7rem);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+  }
+  .hero-role {
+    font-family: var(--mono);
+    font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-top: 1rem;
+  }
+  .hero-disciplines {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--text-secondary);
+    margin-top: 0.55rem;
+  }
+  .hero-entry { text-align: right; }
+  .hero-entry .eyebrow { display: block; margin-bottom: 0.7rem; }
+  .hero-entry-title {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: clamp(1.6rem, 3.8vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+  }
+  .hero-entry-sub {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    margin-top: 0.6rem;
+  }
+  .hero-entry-meta {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+    display: inline-block;
+  }
+  .scroll-cue {
+    position: absolute;
+    bottom: 1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.1em;
+    animation: cue 2.4s ease-in-out infinite;
+  }
+  @keyframes cue {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+    50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+  }
+
+  /* ============ 通用容器 / 区块 ============ */
+  .section { padding: clamp(4rem, 9vw, 8rem) 0; }
+  section { scroll-margin-top: 5rem; }
+
+  .section-head { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+  .section-head .eyebrow { display: block; margin-bottom: 1.4rem; }
+  .section-title {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 5.5vw, 4rem);
+    line-height: 1.08;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .section-sub {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+  }
+
+  .sub-head {
+    max-width: var(--max);
+    margin: clamp(3.5rem, 8vw, 6rem) auto 2.2rem;
+    padding: 0 var(--pad);
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .sub-head h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.4rem, 2.8vw, 2rem); }
+  .sub-head .en { font-family: var(--mono); font-size: 0.78rem; color: var(--text-secondary); letter-spacing: 0.1em; }
+  .sub-head .count { margin-left: auto; font-family: var(--mono); font-size: 0.74rem; color: var(--text-secondary); letter-spacing: 0.14em; }
+
+  /* ============ 媒体相框（占位 + 图片槽） ============ */
+  .media-frame {
+    position: relative;
+    background: #E9E6DD;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 18px rgba(28, 28, 28, 0.05);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    will-change: transform;
+  }
+  .media-frame img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    z-index: 1;
+    transition: opacity 0.4s ease;
+  }
+  .placeholder-tag {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+  .parallax { display: block; will-change: transform; }
+
+  /* ============ 编辑式网格 ============ */
+  .editorial-grid {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--pad);
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+
+  /* LEAVING 1129：5 张，非对称错落（保留原始比例，不裁剪） */
+  .l1 { grid-column: 1 / span 8; }
+  .l2 { grid-column: 9 / span 4; margin-top: clamp(4rem, 9vw, 8rem); }
+  .l3 { grid-column: 2 / span 5; margin-top: 2.5rem; }
+  .l4 { grid-column: 7 / span 6; }
+  .l5 { grid-column: 4 / span 6; margin-top: clamp(2rem, 5vw, 4rem); }
+
+  /* VISUAL TRANSLATION：4 张，两列错落（保留原始比例，不裁剪） */
+  .t1 { grid-column: 1 / span 6; }
+  .t2 { grid-column: 7 / span 6; margin-top: 3.5rem; }
+  .t3 { grid-column: 2 / span 6; margin-top: 1rem; }
+  .t4 { grid-column: 8 / span 5; margin-top: 4.5rem; }
+
+  /* Hover：轻轻拿起 */
+  .photo:hover .media-frame {
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: 0 22px 48px rgba(28, 28, 28, 0.14);
+  }
+
+  /* 图注：项目名 / 年份 / 地点 / 类型 */
+  .caption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+    align-items: baseline;
+    margin-top: 0.9rem;
+  }
+  .caption-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--text-secondary);
+    margin-right: 0.2rem;
+  }
+  .caption-cn { font-family: var(--serif); font-size: 0.95rem; }
+  .caption-en { font-family: var(--mono); font-size: 0.74rem; color: var(--text-secondary); }
+  .caption-meta {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+  }
+
+  /* ============ 项目资料（理性） ============ */
+  .project-meta {
+    max-width: var(--max);
+    margin: clamp(3rem, 7vw, 6rem) auto 0;
+    padding: 0 var(--pad);
+    display: grid;
+    grid-template-columns: 0.85fr 1.4fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .project-meta dl { border-top: 1px solid var(--border); }
+  .project-meta dl > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .project-meta dt {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .project-meta dd {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-align: right;
+  }
+  .project-intro p { font-size: 1.02rem; color: #3A3833; max-width: 52ch; }
+  .project-intro p + p { margin-top: 1.4rem; }
+  .project-intro .en { font-size: 0.92rem; color: var(--text-secondary); }
+  .project-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.8rem;
+  }
+  .project-types li {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-secondary);
+  }
+
+  /* ============ 技能清单（视觉转译） ============ */
+  .skills {
+    border-top: 1px solid var(--border);
+  }
+  .skill {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill h4 {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    min-width: 7rem;
+  }
+  .skill p {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    color: #3A3833;
+  }
+
+  /* ============ 视频卡片 ============ */
+  .video-wrap {
+    max-width: var(--max);
+    margin: clamp(3rem, 7vw, 6rem) auto 0;
+    padding: 0 var(--pad);
+  }
+  .video-card {
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #141414;
+    aspect-ratio: 16 / 9;
+  }
+  .video-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .video-shade {
+    position: absolute;
+    inset: 0;
+    background: rgba(243, 241, 235, 0.16);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+  .video-card:hover .video-shade { opacity: 1; }
+  .video-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+  .video-card:not(.is-playing) .video-btn { opacity: 1; }
+  .video-card:hover .video-btn { opacity: 1; }
+  .video-btn .icon {
+    width: 76px; height: 76px;
+    border-radius: 50%;
+    background: rgba(28, 28, 28, 0.85);
+    color: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.45s var(--ease);
+  }
+  .video-card:hover .video-btn .icon { transform: scale(1.06); }
+  .video-btn .icon svg { width: 26px; height: 26px; }
+  .video-btn .icon .icon-pause { display: none; }
+  .video-card.is-playing .icon .icon-play { display: none; }
+  .video-card.is-playing .icon .icon-pause { display: block; }
+  .video-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+  .video-caption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    margin-top: 1rem;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+  }
+  .video-caption .cn { font-family: var(--serif); color: var(--text-primary); font-size: 0.95rem; }
+
+  /* ============ 关于 / 联系 ============ */
+  .closing { padding: clamp(4rem, 9vw, 8rem) 0; }
+  .closing-grid {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--pad);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+  .closing h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    margin: 1rem 0 1.4rem;
+  }
+  .closing p { font-size: 1rem; color: #3A3833; max-width: 46ch; }
+  .closing p.en { font-size: 0.88rem; color: var(--text-secondary); margin-top: 1.1rem; }
+  .contact-list { margin-top: 1.4rem; border-top: 1px solid var(--border); }
+  .contact-list a, .contact-list span {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+  }
+  .contact-list .lbl { color: var(--text-secondary); }
+
+  /* ============ 页脚 ============ */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.4rem var(--pad);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+  }
+
+  /* ============ 滚动淡入 ============ */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s ease, transform 0.9s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+
+  /* ============ 响应式 ============ */
+  @media (max-width: 900px) {
+    .hero-content { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-entry { text-align: left; }
+    .project-meta { grid-template-columns: 1fr; }
+    .closing-grid { grid-template-columns: 1fr; }
+    .editorial-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .editorial-grid .photo { grid-column: 1 / -1 !important; margin-top: 0 !important; }
+    .caption-meta { margin-left: 0; width: 100%; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .nav-brand-en { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .bg-line, .scroll-cue { animation: none !important; }
+    .bg-line { opacity: 0.16; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- 固定背景文字层（最底层，呼吸效果） -->
+<div class="bg-text" aria-hidden="true">
+  <span class="bg-line bg-line--visual">VISUAL</span>
+  <span class="bg-line bg-line--archive">ARCHIVE</span>
+</div>
+
+<!-- 导航 -->
+<header class="nav">
+  <a class="nav-brand" href="#top">宋佳珊 Livia<span class="nav-brand-en">Visual Creator</span></a>
+  <nav class="nav-links">
+    <a href="#leaving">LEAVING 1129</a>
+    <a href="#translation">VISUAL TRANSLATION</a>
+    <a href="#about">THE OBSERVER</a>
+  </nav>
+</header>
+
+<!-- Hero：排版式封面 -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-identity">
+      <h1 class="hero-name">宋佳珊 Livia</h1>
+      <p class="hero-role">Visual Creator</p>
+      <p class="hero-disciplines">Photography / Video / Design</p>
+    </div>
+    <div class="hero-entry">
+      <span class="eyebrow">Selected Project · 001</span>
+      <h2 class="hero-entry-title">LEAVING 1129</h2>
+      <p class="hero-entry-sub">A Visual Study of Space and Everyday Life</p>
+      <p class="hero-entry-meta">Hangzhou · 2026</p>
+    </div>
+  </div>
+
+  <a class="scroll-cue" href="#leaving" aria-label="向下滚动">↓</a>
+</section>
+
+<main>
+  <!-- ============ 项目一：LEAVING 1129 ============ -->
+  <section class="section" id="leaving">
+    <header class="section-head reveal">
+      <span class="eyebrow">Project 01 · 精选作品</span>
+      <h2 class="section-title">LEAVING 1129</h2>
+      <p class="section-sub">A Visual Study of Space and Everyday Life</p>
+      <ul class="project-types">
+        <li>Short Film</li>
+        <li>Spatial Photography</li>
+        <li>Visual Storytelling</li>
+      </ul>
+    </header>
+
+    <div class="project-meta reveal">
+      <dl>
+        <div><dt>项目 Project</dt><dd>LEAVING 1129</dd></div>
+        <div><dt>年份 Year</dt><dd>2026</dd></div>
+        <div><dt>地点 Location</dt><dd>Hangzhou · China</dd></div>
+        <div><dt>类型 Type</dt><dd>Short Film · Photography</dd></div>
+        <div><dt>媒介 Medium</dt><dd>Video · 5 Photographs</dd></div>
+      </dl>
+      <div class="project-intro">
+        <p>留下 1129 是杭州一处社区中心——一个被日常与光线包裹的公共空间。镜头在这里放慢脚步，记录建筑与光影的秩序、人与空间安静而持久的对话，以及时间里缓缓流动的细节。</p>
+        <p class="en">Liuxia 1129 is a community center in Hangzhou — a public space wrapped in everyday life and light. The lens slows down here to record the order of architecture and shadow, the quiet, enduring dialogue between people and space, and the small details drifting through time.</p>
+      </div>
+    </div>
+
+    <div class="video-wrap reveal">
+      <figure class="video-card" id="videoCard">
+        <video id="projectVideo" poster="images/leaving-01.jpg" preload="none" playsinline>
+          <source src="videos/leaving-1129.mp4" type="video/mp4">
+        </video>
+        <div class="video-shade"></div>
+        <button class="video-btn" aria-label="播放 / 暂停">
+          <span class="icon">
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+          </span>
+          <span class="video-label">Short Film · 短片</span>
+        </button>
+      </figure>
+      <figcaption class="video-caption">
+        <span class="cn">LEAVING 1129 — 短片</span>
+        <span>Short Film</span>
+        <span>2026 · Hangzhou · 16:9</span>
+      </figcaption>
+    </div>
+
+    <div class="sub-head reveal">
+      <h3>系列影像</h3>
+      <span class="en">Photographs</span>
+      <span class="count">05 张</span>
+    </div>
+    <div class="editorial-grid">
+      <figure class="photo l1 reveal">
+        <div class="parallax" data-parallax="0.06">
+          <div class="media-frame">
+            <img src="images/leaving-01.jpg" alt="LEAVING 1129 摄影 01" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Photograph 01</span>
+          </div>
+        </div>
+
+      </figure>
+
+      <figure class="photo l2 reveal">
+        <div class="parallax" data-parallax="0.09">
+          <div class="media-frame">
+            <img src="images/leaving-04.jpg" alt="LEAVING 1129 摄影 04" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Photograph 04</span>
+          </div>
+        </div>
+
+      </figure>
+
+      <figure class="photo l3 reveal">
+        <div class="parallax" data-parallax="0.07">
+          <div class="media-frame">
+            <img src="images/leaving-02.jpg" alt="LEAVING 1129 摄影 02" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Photograph 02</span>
+          </div>
+        </div>
+
+      </figure>
+
+      <figure class="photo l4 reveal">
+        <div class="parallax" data-parallax="0.05">
+          <div class="media-frame">
+            <img src="images/leaving-03.jpg" alt="LEAVING 1129 摄影 03" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Photograph 03</span>
+          </div>
+        </div>
+
+      </figure>
+
+      <figure class="photo l5 reveal">
+        <div class="parallax" data-parallax="0.05">
+          <div class="media-frame">
+            <img src="images/leaving-05.jpg" alt="LEAVING 1129 摄影 05" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Photograph 05</span>
+          </div>
+        </div>
+
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 项目二：VISUAL TRANSLATION ============ -->
+  <section class="section" id="translation">
+    <header class="section-head reveal">
+      <span class="eyebrow">Project 02 · 视觉转译</span>
+      <h2 class="section-title">VISUAL TRANSLATION</h2>
+      <p class="section-sub">Transforming Ideas into Visual Stories</p>
+    </header>
+
+    <div class="project-meta reveal">
+      <div class="project-intro">
+        <p>我有跨境电商美工和视觉设计相关经验，主要负责产品图片处理、详情页设计、活动海报制作等工作。</p>
+        <p>除了商业设计外，我也长期进行摄影和视频创作，关注空间、人文与生活场景的视觉表达。</p>
+        <p>目前能够独立完成：</p>
+      </div>
+      <div class="skills">
+        <div class="skill">
+          <h4>平面设计</h4>
+          <p>海报设计｜产品视觉｜详情页排版</p>
+        </div>
+        <div class="skill">
+          <h4>影像制作</h4>
+          <p>拍摄｜剪辑｜基础调色｜视频包装</p>
+        </div>
+        <div class="skill">
+          <h4>使用工具</h4>
+          <p>Photoshop｜Premiere Pro｜Illustrator</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="editorial-grid" style="margin-top: clamp(3rem, 7vw, 6rem);">
+      <figure class="photo t1 reveal">
+        <div class="parallax" data-parallax="0.07">
+          <div class="media-frame">
+            <img src="images/translation-01.jpg" alt="视觉转译 01" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 01</span>
+          </div>
+        </div>
+        
+      </figure>
+
+      <figure class="photo t2 reveal">
+        <div class="parallax" data-parallax="0.08">
+          <div class="media-frame">
+            <img src="images/translation-02.png" alt="视觉转译 02" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 02</span>
+          </div>
+        </div>
+        
+      </figure>
+
+      <figure class="photo t3 reveal">
+        <div class="parallax" data-parallax="0.06">
+          <div class="media-frame">
+            <img src="images/translation-03.jpg" alt="视觉转译 03" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 03</span>
+          </div>
+        </div>
+        
+      </figure>
+
+      <figure class="photo t4 reveal">
+        <div class="parallax" data-parallax="0.07">
+          <div class="media-frame">
+            <img src="images/translation-04.jpg" alt="视觉转译 04" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 04</span>
+          </div>
+        </div>
+        
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ 关于：THE OBSERVER ============ -->
+  <section class="closing" id="about">
+    <div class="closing-grid">
+      <div class="reveal">
+        <span class="eyebrow">About · 关于</span>
+        <h2>THE OBSERVER</h2>
+        <p>我习惯观察人与空间之间的关系。<br>从商业视觉设计，到摄影与视频创作，我不断尝试用不同媒介记录真实场景中的细节、情绪与故事。<br>希望通过设计与影像，让日常经验被重新看见。</p>
+        <p class="en">I observe the relationship between people and spaces.<br>Through visual design, photography and video, I explore different ways to capture details, emotions and stories from everyday experiences.</p>
+      </div>
+      <div class="reveal" id="contact">
+        <span class="eyebrow">Contact · 联系</span>
+        <h2>一起合作</h2>
+        <div class="contact-list">
+          <a href="mailto:a2407468968@163.com"><span class="lbl">Email</span> a2407468968@163.com</a>
+          <span><span class="lbl">小红书</span> 绿色星球上的小王子</span>
+          <span><span class="lbl">Based in</span> Hangzhou · China</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© <span id="year">2026</span> 宋佳珊 Livia — Visual Creator</span>
+  <span>Digital Photography Book · 数字摄影书</span>
+  <span>Hangzhou · 杭州</span>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ===== 视差 ===== */
+  var pEls = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
+  if (!reduce && pEls.length) {
+    var ticking = false;
+    function update() {
+      var vh = window.innerHeight;
+      pEls.forEach(function (el) {
+        var sp = parseFloat(el.getAttribute("data-parallax")) || 0.07;
+        var r = el.getBoundingClientRect();
+        var dist = r.top + r.height / 2 - vh / 2;
+        var shift = Math.max(-30, Math.min(30, dist * sp));
+        el.style.transform = "translate3d(0," + shift.toFixed(2) + "px,0)";
+      });
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  }
+
+  /* ===== 滚动淡入 ===== */
+  var revEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+  if (!reduce && "IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    revEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revEls.forEach(function (el) { el.classList.add("is-visible"); });
+  }
+
+  /* ===== 视频：点击播放/暂停 ===== */
+  var card = document.getElementById("videoCard");
+  var video = document.getElementById("projectVideo");
+  if (card && video) {
+    card.addEventListener("click", function () {
+      if (video.paused) { video.play(); card.classList.add("is-playing"); }
+      else { video.pause(); card.classList.remove("is-playing"); }
+    });
+    video.addEventListener("ended", function () { card.classList.remove("is-playing"); });
+  }
+
+  /* ===== 页脚年份 ===== */
+  var yr = document.getElementById("year");
+  if (yr) { yr.textContent = new Date().getFullYear(); }
+})();
+</script>
+</body>
+</html>
