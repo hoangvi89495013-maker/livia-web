@@ -9,7 +9,7 @@
 <meta property="og:title" content="宋佳珊 Livia — Visual Creator">
 <meta property="og:description" content="LEAVING 1129 · A Visual Study of Space and Everyday Life · Hangzhou 2026">
 <meta property="og:type" content="website">
-<meta property="og:image" content="./leaving-01.jpg">
+<meta property="og:image" content="images/leaving-01.jpg">
 
 <script>
   /* 图片加载失败时隐藏，露出纸感相框占位 */
@@ -117,9 +117,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.1rem var(--pad);
-    background: rgba(243, 241, 235, 0.72);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--background);
     border-bottom: 1px solid var(--border);
   }
   .nav-brand {
@@ -272,7 +270,6 @@
     border: 1px solid var(--border);
     box-shadow: 0 4px 18px rgba(28, 28, 28, 0.05);
     transition: transform 0.5s ease, box-shadow 0.5s ease;
-    will-change: transform;
   }
   .media-frame img {
     position: relative;
@@ -295,7 +292,7 @@
     text-transform: uppercase;
     color: var(--text-secondary);
   }
-  .parallax { display: block; will-change: transform; }
+  .parallax { display: block; }
 
   /* ============ 编辑式网格 ============ */
   .editorial-grid {
@@ -455,17 +452,6 @@
     object-position: center;
     display: block;
   }
-  .video-shade {
-    position: absolute;
-    inset: 0;
-    background: rgba(243, 241, 235, 0.16);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    opacity: 0;
-    transition: opacity 0.45s ease;
-    pointer-events: none;
-  }
-  .video-card:hover .video-shade { opacity: 1; }
   .video-btn {
     position: absolute;
     inset: 0;
@@ -561,9 +547,7 @@
     color: var(--text-secondary);
   }
 
-  /* ============ 滚动淡入 ============ */
-  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s ease, transform 0.9s ease; }
-  .reveal.is-visible { opacity: 1; transform: none; }
+  /* 滚动淡入已移除：内容默认可见，避免 IntersectionObserver 与 transform 动画开销 */
 
   /* ============ 响应式 ============ */
   @media (max-width: 900px) {
@@ -584,7 +568,6 @@
     html { scroll-behavior: auto; }
     .bg-line, .scroll-cue { animation: none !important; }
     .bg-line { opacity: 0.16; }
-    .reveal { opacity: 1; transform: none; transition: none; }
   }
 </style>
 </head>
@@ -655,10 +638,9 @@
 
     <div class="video-wrap reveal">
       <figure class="video-card" id="videoCard">
-        <video id="projectVideo" poster="./leaving-01.jpg" preload="none" playsinline>
-          <source src="./leaving-1129.mp4" type="video/mp4">
+        <video id="projectVideo" poster="images/leaving-01.jpg" preload="none" playsinline>
+          <source src="videos/leaving-1129.mp4" type="video/mp4">
         </video>
-        <div class="video-shade"></div>
         <button class="video-btn" aria-label="播放 / 暂停">
           <span class="icon">
             <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -683,8 +665,8 @@
       <figure class="photo l1 reveal">
         <div class="parallax" data-parallax="0.06">
           <div class="media-frame">
-            <img src="./leaving-01.jpg" alt="LEAVING 1129 摄影 01" loading="lazy" onerror="imgErr(this)">
-            <span class="placeholder-tag">Photograph 01</span>
+            <img src="images/leaving-04.jpg" alt="LEAVING 1129 摄影 04" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Photograph 04</span>
           </div>
         </div>
 
@@ -693,8 +675,8 @@
       <figure class="photo l2 reveal">
         <div class="parallax" data-parallax="0.09">
           <div class="media-frame">
-            <img src="./leaving-04.jpg" alt="LEAVING 1129 摄影 04" loading="lazy" onerror="imgErr(this)">
-            <span class="placeholder-tag">Photograph 04</span>
+            <img src="images/leaving-01.jpg" alt="LEAVING 1129 摄影 01" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Photograph 01</span>
           </div>
         </div>
 
@@ -703,7 +685,7 @@
       <figure class="photo l3 reveal">
         <div class="parallax" data-parallax="0.07">
           <div class="media-frame">
-            <img src="./leaving-02.jpg" alt="LEAVING 1129 摄影 02" loading="lazy" onerror="imgErr(this)">
+            <img src="images/leaving-02.jpg" alt="LEAVING 1129 摄影 02" loading="lazy" onerror="imgErr(this)">
             <span class="placeholder-tag">Photograph 02</span>
           </div>
         </div>
@@ -713,7 +695,7 @@
       <figure class="photo l4 reveal">
         <div class="parallax" data-parallax="0.05">
           <div class="media-frame">
-            <img src="./leaving-03.jpg" alt="LEAVING 1129 摄影 03" loading="lazy" onerror="imgErr(this)">
+            <img src="images/leaving-03.jpg" alt="LEAVING 1129 摄影 03" loading="lazy" onerror="imgErr(this)">
             <span class="placeholder-tag">Photograph 03</span>
           </div>
         </div>
@@ -723,7 +705,7 @@
       <figure class="photo l5 reveal">
         <div class="parallax" data-parallax="0.05">
           <div class="media-frame">
-            <img src="./leaving-05.jpg" alt="LEAVING 1129 摄影 05" loading="lazy" onerror="imgErr(this)">
+            <img src="images/leaving-05.jpg" alt="LEAVING 1129 摄影 05" loading="lazy" onerror="imgErr(this)">
             <span class="placeholder-tag">Photograph 05</span>
           </div>
         </div>
@@ -766,41 +748,41 @@
       <figure class="photo t1 reveal">
         <div class="parallax" data-parallax="0.07">
           <div class="media-frame">
-            <img src="./translation-01.jpg" alt="视觉转译 01" loading="lazy" onerror="imgErr(this)">
-            <span class="placeholder-tag">Visual 01</span>
+            <img src="images/translation-03.jpg" alt="视觉转译 03" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 03</span>
           </div>
         </div>
-        
+
       </figure>
 
       <figure class="photo t2 reveal">
         <div class="parallax" data-parallax="0.08">
           <div class="media-frame">
-            <img src="./translation-02.png" alt="视觉转译 02" loading="lazy" onerror="imgErr(this)">
-            <span class="placeholder-tag">Visual 02</span>
+            <img src="images/translation-04.jpg" alt="视觉转译 04" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 04</span>
           </div>
         </div>
-        
+
       </figure>
 
       <figure class="photo t3 reveal">
         <div class="parallax" data-parallax="0.06">
           <div class="media-frame">
-            <img src="./translation-03.jpg" alt="视觉转译 03" loading="lazy" onerror="imgErr(this)">
-            <span class="placeholder-tag">Visual 03</span>
+            <img src="images/translation-01.jpg" alt="视觉转译 01" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 01</span>
           </div>
         </div>
-        
+
       </figure>
 
       <figure class="photo t4 reveal">
         <div class="parallax" data-parallax="0.07">
           <div class="media-frame">
-            <img src="./translation-04.jpg" alt="视觉转译 04" loading="lazy" onerror="imgErr(this)">
-            <span class="placeholder-tag">Visual 04</span>
+            <img src="images/translation-02.png" alt="视觉转译 02" loading="lazy" onerror="imgErr(this)">
+            <span class="placeholder-tag">Visual 02</span>
           </div>
         </div>
-        
+
       </figure>
     </div>
   </section>
@@ -836,44 +818,6 @@
 <script>
 (function () {
   "use strict";
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  /* ===== 视差 ===== */
-  var pEls = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
-  if (!reduce && pEls.length) {
-    var ticking = false;
-    function update() {
-      var vh = window.innerHeight;
-      pEls.forEach(function (el) {
-        var sp = parseFloat(el.getAttribute("data-parallax")) || 0.07;
-        var r = el.getBoundingClientRect();
-        var dist = r.top + r.height / 2 - vh / 2;
-        var shift = Math.max(-30, Math.min(30, dist * sp));
-        el.style.transform = "translate3d(0," + shift.toFixed(2) + "px,0)";
-      });
-      ticking = false;
-    }
-    function onScroll() {
-      if (!ticking) { ticking = true; requestAnimationFrame(update); }
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    update();
-  }
-
-  /* ===== 滚动淡入 ===== */
-  var revEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
-  if (!reduce && "IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.12 });
-    revEls.forEach(function (el) { io.observe(el); });
-  } else {
-    revEls.forEach(function (el) { el.classList.add("is-visible"); });
-  }
-
   /* ===== 视频：点击播放/暂停 ===== */
   var card = document.getElementById("videoCard");
   var video = document.getElementById("projectVideo");
