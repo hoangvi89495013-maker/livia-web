@@ -429,88 +429,171 @@
     color: #3A3833;
   }
 
-  /* ============ 视频卡片 ============ */
+  /* ============ 视频卡片（竖屏影像档案） ============ */
   .video-wrap {
     max-width: var(--max);
     margin: clamp(3rem, 7vw, 6rem) auto 0;
     padding: 0 var(--pad);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .video-card {
     position: relative;
     cursor: pointer;
-    border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--border);
     background: #141414;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 9 / 16;
+    width: min(400px, 80vw, 42vh);
+    box-shadow: 0 4px 18px rgba(28, 28, 28, 0.05);
+    transition: transform 800ms ease-out, box-shadow 800ms ease-out;
+    will-change: transform;
+  }
+  .video-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 28px 64px rgba(28, 28, 28, 0.18), 0 0 48px rgba(28, 28, 28, 0.08);
   }
   .video-card video {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
     display: block;
   }
-  .video-shade {
+  .video-grain {
     position: absolute;
     inset: 0;
-    background: rgba(243, 241, 235, 0.16);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    opacity: 0;
-    transition: opacity 0.45s ease;
+    z-index: 2;
     pointer-events: none;
+    opacity: 0.18;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .video-card:hover .video-shade { opacity: 1; }
-  .video-btn {
+  .video-archive {
+    position: absolute;
+    top: 1.1rem;
+    left: 1.1rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #F3F1EB;
+    opacity: 0.55;
+    line-height: 1.5;
+    pointer-events: none;
+    transition: opacity 500ms ease;
+  }
+  .video-card:hover .video-archive { opacity: 0; }
+  .video-play {
     position: absolute;
     inset: 0;
+    z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    border: none;
-    background: transparent;
-    cursor: pointer;
+    gap: 0.9rem;
     opacity: 0;
-    transition: opacity 0.45s ease;
     pointer-events: none;
+    transition: opacity 500ms ease;
   }
-  .video-card:not(.is-playing) .video-btn { opacity: 1; }
-  .video-card:hover .video-btn { opacity: 1; }
-  .video-btn .icon {
-    width: 76px; height: 76px;
+  .video-card:hover .video-play { opacity: 1; }
+  .video-play .icon {
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
-    background: rgba(28, 28, 28, 0.85);
-    color: var(--background);
+    background: rgba(28, 28, 28, 0.72);
+    color: #F3F1EB;
+    border: 1px solid rgba(243, 241, 235, 0.28);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.45s var(--ease);
   }
-  .video-card:hover .video-btn .icon { transform: scale(1.06); }
-  .video-btn .icon svg { width: 26px; height: 26px; }
-  .video-btn .icon .icon-pause { display: none; }
-  .video-card.is-playing .icon .icon-play { display: none; }
-  .video-card.is-playing .icon .icon-pause { display: block; }
-  .video-label {
+  .video-play .icon svg { width: 22px; height: 22px; margin-left: 3px; }
+  .video-play .label {
     font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
+    font-size: 0.66rem;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--text-primary);
+    color: #F3F1EB;
   }
   .video-caption {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem 1.4rem;
-    margin-top: 1rem;
+    margin-top: 1.1rem;
     font-family: var(--mono);
     font-size: 0.74rem;
     color: var(--text-secondary);
     letter-spacing: 0.08em;
   }
   .video-caption .cn { font-family: var(--serif); color: var(--text-primary); font-size: 0.95rem; }
+
+  /* ============ 电影开场展开层 ============ */
+  .video-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0.78);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 600ms ease;
+  }
+  .video-lightbox.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .video-lightbox-stage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 1001;
+    transform-origin: center center;
+    background: #141414;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55);
+    visibility: hidden;
+    transition: transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+  }
+  .video-lightbox-stage video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .video-lightbox-close {
+    position: fixed;
+    top: 1.4rem;
+    right: 1.6rem;
+    z-index: 1002;
+    background: rgba(10, 10, 10, 0.4);
+    border: 1px solid rgba(243, 241, 235, 0.35);
+    color: #F3F1EB;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 0.55rem 0.95rem;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 400ms ease, background 300ms ease;
+  }
+  .video-lightbox-close.is-open { opacity: 1; pointer-events: auto; }
+  .video-lightbox-close:hover { background: rgba(10, 10, 10, 0.72); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-card,
+    .video-card:hover { transform: none; transition: none; }
+    .video-lightbox-stage { transition: none; }
+  }
 
   /* ============ 关于 / 联系 ============ */
   .closing { padding: clamp(4rem, 9vw, 8rem) 0; }
@@ -653,19 +736,23 @@
         <video id="projectVideo" poster="./leaving-01.jpg" preload="none" playsinline>
           <source src="./leaving-1129.mp4" type="video/mp4">
         </video>
-        <div class="video-shade"></div>
-        <button class="video-btn" aria-label="播放 / 暂停">
+        <div class="video-grain" aria-hidden="true"></div>
+        <div class="video-archive" aria-hidden="true">
+          <span>VISUAL ARCHIVE</span>
+          <span>MOVING IMAGE</span>
+          <span>2025</span>
+        </div>
+        <div class="video-play" aria-hidden="true">
           <span class="icon">
-            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </span>
-          <span class="video-label">Short Film · 短片</span>
-        </button>
+          <span class="label">Play · 播放</span>
+        </div>
       </figure>
       <figcaption class="video-caption">
         <span class="cn">LEAVING 1129 — 短片</span>
         <span>Short Film</span>
-        <span>2026 · Hangzhou · 16:9</span>
+        <span>2026 · Hangzhou · 9:16</span>
       </figcaption>
     </div>
 
@@ -828,6 +915,15 @@
   <span>Hangzhou · 杭州</span>
 </footer>
 
+<!-- 电影开场展开层 -->
+<div class="video-lightbox" id="videoLightbox" aria-hidden="true"></div>
+<div class="video-lightbox-stage" id="videoStage">
+  <video id="lightboxVideo" poster="./leaving-01.jpg" preload="none" playsinline>
+    <source src="./leaving-1129.mp4" type="video/mp4">
+  </video>
+</div>
+<button class="video-lightbox-close" id="videoClose" type="button" aria-label="关闭视频">Close · 关闭</button>
+
 <script>
 (function () {
   "use strict";
@@ -869,15 +965,72 @@
     revEls.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  /* ===== 视频：点击播放/暂停 ===== */
+  /* ===== 视频：电影开场展开 ===== */
   var card = document.getElementById("videoCard");
-  var video = document.getElementById("projectVideo");
-  if (card && video) {
-    card.addEventListener("click", function () {
-      if (video.paused) { video.play(); card.classList.add("is-playing"); }
-      else { video.pause(); card.classList.remove("is-playing"); }
+  var lightbox = document.getElementById("videoLightbox");
+  var stage = document.getElementById("videoStage");
+  var lbVideo = document.getElementById("lightboxVideo");
+  var closeBtn = document.getElementById("videoClose");
+
+  if (card && lightbox && stage && lbVideo && closeBtn) {
+    var isOpen = false;
+    var hideTimer = null;
+    var closeDelay = reduce ? 0 : 700;
+
+    function openLightbox() {
+      var rect = card.getBoundingClientRect();
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var targetH = Math.min(vh * 0.84, 1100);
+      var targetW = targetH * 9 / 16;
+
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+
+      stage.style.top = rect.top + "px";
+      stage.style.left = rect.left + "px";
+      stage.style.width = rect.width + "px";
+      stage.style.height = rect.height + "px";
+      stage.style.transform = "translate(0, 0) scale(1)";
+      stage.style.visibility = "visible";
+
+      void stage.offsetWidth; // 强制重排，让起始状态生效
+
+      var s = targetW / rect.width;
+      var tx = (vw / 2) - (rect.left + rect.width / 2);
+      var ty = (vh / 2) - (rect.top + rect.height / 2);
+
+      lightbox.classList.add("is-open");
+      closeBtn.classList.add("is-open");
+      stage.style.transform = "translate(" + tx + "px, " + ty + "px) scale(" + s + ")";
+
+      lbVideo.currentTime = 0;
+      var p = lbVideo.play();
+      if (p && p.catch) { p.catch(function () {}); }
+      isOpen = true;
+    }
+
+    function closeLightbox() {
+      if (!isOpen) { return; }
+      isOpen = false;
+      stage.style.transform = "translate(0, 0) scale(1)";
+      lightbox.classList.remove("is-open");
+      closeBtn.classList.remove("is-open");
+      lbVideo.pause();
+      hideTimer = setTimeout(function () {
+        stage.style.visibility = "hidden";
+      }, closeDelay);
+    }
+
+    card.addEventListener("click", openLightbox);
+    closeBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      closeLightbox();
     });
-    video.addEventListener("ended", function () { card.classList.remove("is-playing"); });
+    lightbox.addEventListener("click", closeLightbox);
+    lbVideo.addEventListener("ended", closeLightbox);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { closeLightbox(); }
+    });
   }
 
   /* ===== 页脚年份 ===== */
